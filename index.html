@@ -222,7 +222,7 @@
                 quizSection.innerHTML = '';
                 shuffledQuestions.forEach((q, index) => {
                     const card = document.createElement('div');
-                    card.classList.add('question-card', 'bg-white', 'p-6', 'rounded-xl', 'shadow-lg', 'relative', 'overflow-hidden');
+                    card.classList.add('question-card', 'bg-white', 'p-6', 'rounded-xl', 'shadow-lg', 'relative', 'overflow-hidden', 'mb-6');
 
                     const title = document.createElement('h2');
                     title.classList.add('text-xl', 'font-bold', 'mb-4');
@@ -230,7 +230,7 @@
                     card.appendChild(title);
 
                     const optionsContainer = document.createElement('div');
-                    optionsContainer.classList.add('space-y-3');
+                    optionsContainer.classList.add('space-y-3', 'mb-6');
                     const shuffledOptions = shuffleArray([...q.options]);
 
                     shuffledOptions.forEach(option => {
@@ -268,7 +268,7 @@
                     const colorBar = document.createElement('img');
                     colorBar.src = "barra.jpeg";
                     colorBar.alt = "Color bar";
-                    colorBar.classList.add('absolute', 'bottom-[-10px]', 'left-0', 'w-full', 'h-8', 'object-cover', 'rounded-b-xl');
+                    colorBar.classList.add('w-full', 'h-8', 'object-cover', 'rounded-b-xl');
                     card.appendChild(colorBar);
                 });
 
