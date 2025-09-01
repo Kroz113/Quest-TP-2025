@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vocacional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
+        }
+
+        .bebas-neue {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        /* Ocultar las preguntas del test por defecto */
+        .question-card, #result-section {
+            display: none;
+        }
+
+        .area-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 3px solid #cbd5e1;
+            padding: 5px;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl text-center relative overflow-hidden">
+        <div class="flex items-center justify-center mb-6 space-x-4">
+            <img src="C:\Python\Scripts\TP\benen educa.jpeg" alt="Fundación Belén Educa Logo" class="max-w-[150px] md:max-w-xs h-auto">
+            <img src="C:\Python\Scripts\TP\tp.jpeg" alt="Técnicos Profesionales Logo" class="max-w-[70px] md:max-w-[90px] h-auto">
+        </div>
+        
+        <h1 class="bebas-neue text-5xl md:text-6xl font-bold text-gray-800 mb-4">Test Vocacional</h1>
+        <p class="text-gray-600 mb-6 max-w-prose">
+            ¡Bienvenido a tu viaje de autodescubrimiento! Responde este test para identificar tu área de interés. No hay respuestas correctas ni incorrectas; lo importante es ser honesto para encontrar el camino que más te apasiona.
+        </p>
+
+        <button id="start-button" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-full shadow-md hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+            Comenzar
+        </button>
+
+        <!-- Color Bar at the bottom -->
+        <img src="C:\Python\Scripts\TP\barra.jpeg" alt="Color bar" class="absolute bottom-0 left-0 w-full h-8 object-cover rounded-b-xl">
+    </div>
+
+    <!-- Main Quiz Section -->
+    <div id="quiz-section" class="w-full max-w-2xl space-y-4">
+    </div>
+
+    <!-- Result Section -->
+    <div id="result-section" class="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl text-center relative overflow-hidden">
+        <div class="flex justify-center mb-6">
+            <img src="C:\Python\Scripts\TP\tp.jpeg" alt="Técnicos Profesionales Logo" class="max-w-[120px] h-auto mb-4">
+        </div>
+        
+        <h2 class="bebas-neue text-4xl md:text-5xl font-bold text-gray-800 mb-4">Tu Área de Interés Principal</h2>
+        <div class="mb-6 w-full max-w-sm">
+            <div id="result-area-container" class="p-6 bg-blue-100 rounded-lg shadow-inner">
+                <p id="result-area" class="text-3xl bebas-neue text-blue-800 font-extrabold"></p>
+            </div>
+        </div>
+        <p id="motivational-phrase" class="text-gray-600 mb-8 max-w-prose italic"></p>
+        <button id="restart-button" class="px-8 py-3 bg-gray-600 text-white font-bold rounded-full shadow-md hover:bg-gray-700 transition duration-300 transform hover:scale-105">
+            Reiniciar Test
+        </button>
+
+        <!-- Color Bar at the bottom -->
+        <img src="C:\Python\Scripts\TP\barra.jpeg" alt="Color bar" class="absolute bottom-0 left-0 w-full h-8 object-cover rounded-b-xl">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startButton = document.getElementById('start-button');
+            const restartButton = document.getElementById('restart-button');
+            const splashScreen = document.getElementById('splash-screen');
+            const quizSection = document.getElementById('quiz-section');
+            const resultSection = document.getElementById('result-section');
+            let currentQuestionIndex = 0;
+
+            const questions = [
+                {
+                    text: '¿Qué actividad disfrutas más?',
+                    options: [
+                        { text: 'Investigar cómo funciona el cuerpo humano.', value: 'A' },
+                        { text: 'Construir o programar algo nuevo.', value: 'B' },
+                        { text: 'Crear una pintura o composición musical.', value: 'C' },
+                        { text: 'Planificar un nuevo negocio.', value: 'D' },
+                        { text: 'Enseñar algo que sabes a otras personas.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'En el colegio, disfruto o disfrutaba más…',
+                    options: [
+                        { text: 'Biología o química.', value: 'A' },
+                        { text: 'Matemáticas o física.', value: 'B' },
+                        { text: 'Artes visuales o música.', value: 'C' },
+                        { text: 'Economía o gestión.', value: 'D' },
+                        { text: 'Lenguaje o historia.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'En tu tiempo libre, preferirías…',
+                    options: [
+                        { text: 'Participar en una campaña de salud.', value: 'A' },
+                        { text: 'Armar o reparar un dispositivo.', value: 'B' },
+                        { text: 'Escribir un cuento o pintar.', value: 'C' },
+                        { text: 'Organizar una feria de ventas.', value: 'D' },
+                        { text: 'Ayudar a un niño a estudiar.', value: 'E' }
+                    ]
+                },
+                {
+                    text: '¿Qué feria te gustaría visitar primero?',
+                    options: [
+                        { text: 'Feria de salud.', value: 'A' },
+                        { text: 'Feria de robótica.', value: 'B' },
+                        { text: 'Feria de arte.', value: 'C' },
+                        { text: 'Feria de emprendimiento.', value: 'D' },
+                        { text: 'Feria educativa.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'En un trabajo grupal, prefieres…',
+                    options: [
+                        { text: 'Revisar datos y estadísticas de salud.', value: 'A' },
+                        { text: 'Diseñar la solución técnica.', value: 'B' },
+                        { text: 'Crear el material visual.', value: 'C' },
+                        { text: 'Administrar y coordinar tareas.', value: 'D' },
+                        { text: 'Explicar y guiar al equipo.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'Te motiva más…',
+                    options: [
+                        { text: 'Mejorar la calidad de vida de las personas.', value: 'A' },
+                        { text: 'Resolver problemas técnicos.', value: 'B' },
+                        { text: 'Expresar emociones y creatividad.', value: 'C' },
+                        { text: 'Alcanzar metas económicas.', value: 'D' },
+                        { text: 'Enseñar algo nuevo.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'Si tuvieras que elegir una herramienta de trabajo…',
+                    options: [
+                        { text: 'Microscopio.', value: 'A' },
+                        { text: 'Computadora para programar.', value: 'B' },
+                        { text: 'Pinceles o instrumentos musicales.', value: 'C' },
+                        { text: 'Plan de negocios.', value: 'D' },
+                        { text: 'Libro y pizarra.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'Te ves en el futuro…',
+                    options: [
+                        { text: 'En un hospital o laboratorio.', value: 'A' },
+                        { text: 'En una empresa tecnológica.', value: 'B' },
+                        { text: 'En un taller creativo.', value: 'C' },
+                        { text: 'En una oficina empresarial.', value: 'D' },
+                        { text: 'En una escuela o universidad.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'Prefieres aprender…',
+                    options: [
+                        { text: 'Anatomía o medicina.', value: 'A' },
+                        { text: 'Programación o electrónica.', value: 'B' },
+                        { text: 'Técnicas de arte.', value: 'C' },
+                        { text: 'Estrategias de ventas.', value: 'D' },
+                        { text: 'Métodos de enseñanza.', value: 'E' }
+                    ]
+                },
+                {
+                    text: 'Elige una palabra que te defina:',
+                    options: [
+                        { text: 'Solidario.', value: 'A' },
+                        { text: 'Analítico.', value: 'B' },
+                        { text: 'Creativo.', value: 'C' },
+                        { text: 'Ambicioso.', value: 'D' },
+                        { text: 'Paciente.', value: 'E' }
+                    ]
+                }
+            ];
+
+            const resultsMap = {
+                'A': 'Ciencias y Salud',
+                'B': 'Tecnología',
+                'C': 'Artes',
+                'D': 'Negocios y Administración',
+                'E': 'Educación'
+            };
+
+            const motivationalPhrase = "Tu futuro empieza con conocerte a ti mismo. Elige con pasión, confía en tu talento y crea el camino que te inspire.";
+            let userAnswers = {};
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            function renderQuestions() {
+                const shuffledQuestions = shuffleArray([...questions]);
+                quizSection.innerHTML = '';
+                shuffledQuestions.forEach((q, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('question-card', 'bg-white', 'p-6', 'rounded-xl', 'shadow-lg');
+                    card.dataset.index = index;
+
+                    const title = document.createElement('h2');
+                    title.classList.add('text-xl', 'font-bold', 'mb-4');
+                    title.textContent = `${index + 1}. ${q.text}`;
+                    card.appendChild(title);
+
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.classList.add('space-y-3');
+                    const shuffledOptions = shuffleArray([...q.options]);
+
+                    shuffledOptions.forEach(option => {
+                        const label = document.createElement('label');
+                        label.classList.add('flex', 'items-center', 'bg-gray-100', 'p-4', 'rounded-lg', 'cursor-pointer', 'hover:bg-blue-100', 'transition', 'duration-200');
+
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.name = `q${index}`;
+                        input.value = option.value;
+                        input.classList.add('form-radio', 'h-5', 'w-5', 'text-blue-600');
+
+                        const span = document.createElement('span');
+                        span.classList.add('ml-3', 'text-gray-700');
+                        span.textContent = option.text;
+
+                        label.appendChild(input);
+                        label.appendChild(span);
+                        optionsContainer.appendChild(label);
+                    });
+
+                    card.appendChild(optionsContainer);
+                    
+                    if (index === shuffledQuestions.length - 1) {
+                        const submitButton = document.createElement('button');
+                        submitButton.id = 'submit-button';
+                        submitButton.classList.add('mt-6', 'px-8', 'py-3', 'w-full', 'bg-green-600', 'text-white', 'font-bold', 'rounded-full', 'shadow-md', 'hover:bg-green-700', 'transition', 'duration-300', 'transform', 'hover:scale-105');
+                        submitButton.textContent = 'Ver mi Resultado';
+                        card.appendChild(submitButton);
+                    }
+                    
+                    quizSection.appendChild(card);
+                });
+
+                // Show the first question
+                document.querySelector('.question-card').style.display = 'block';
+
+                // Add event listeners for navigation
+                const questionCards = document.querySelectorAll('.question-card');
+                questionCards.forEach((card, index) => {
+                    const radios = card.querySelectorAll('input[type="radio"]');
+                    radios.forEach(radio => {
+                        radio.addEventListener('change', () => {
+                            if (index + 1 < questionCards.length) {
+                                card.style.display = 'none';
+                                questionCards[index + 1].style.display = 'block';
+                                questionCards[index + 1].scrollIntoView({ behavior: 'smooth' });
+                            }
+                        });
+                    });
+                });
+                
+                // Add event listener for the submit button on the last question
+                document.getElementById('submit-button').addEventListener('click', () => {
+                    const allQuestionsAnswered = Array.from(document.querySelectorAll('.question-card')).every(card => {
+                        return card.querySelector('input[type="radio"]:checked');
+                    });
+
+                    if (allQuestionsAnswered) {
+                        const counts = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0 };
+                        document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                            counts[radio.value]++;
+                        });
+
+                        let maxCount = 0;
+                        let resultKey = '';
+                        for (const key in counts) {
+                            if (counts[key] > maxCount) {
+                                maxCount = counts[key];
+                                resultKey = key;
+                            }
+                        }
+
+                        const resultArea = resultsMap[resultKey] || "No se pudo determinar";
+
+                        quizSection.style.display = 'none';
+                        resultSection.style.display = 'flex';
+                        document.getElementById('result-area').textContent = resultArea;
+                        document.getElementById('motivational-phrase').textContent = motivationalPhrase;
+                    } else {
+                        // Use a simple, non-blocking message
+                        console.log('Por favor, responde todas las preguntas antes de enviar.');
+                    }
+                });
+            }
+
+            // Show the first screen and prepare questions
+            startButton.addEventListener('click', () => {
+                splashScreen.style.display = 'none';
+                quizSection.style.display = 'block';
+                renderQuestions();
+            });
+
+            restartButton.addEventListener('click', () => {
+                resultSection.style.display = 'none';
+                splashScreen.style.display = 'flex';
+                // Reset quiz by clearing quiz section
+                quizSection.innerHTML = '';
+            });
+        });
+    </script>
+</body>
+</html>
