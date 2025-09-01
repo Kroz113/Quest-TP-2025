@@ -32,6 +32,11 @@
             padding: 5px;
             background-color: #f8fafc;
         }
+
+        .question-card {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4">
@@ -39,8 +44,8 @@
     <!-- Splash Screen -->
     <div id="splash-screen" class="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl text-center relative overflow-hidden">
         <div class="flex items-center justify-center mb-6 space-x-4">
-            <img src="C:\Python\Scripts\TP\benen educa.jpeg" alt="Fundación Belén Educa Logo" class="max-w-[150px] md:max-w-xs h-auto">
-            <img src="C:\Python\Scripts\TP\tp.jpeg" alt="Técnicos Profesionales Logo" class="max-w-[70px] md:max-w-[90px] h-auto">
+            <img src="benen educa.jpeg" alt="Fundación Belén Educa Logo" class="max-w-[150px] md:max-w-xs h-auto">
+            <img src="tp.jpeg" alt="Técnicos Profesionales Logo" class="max-w-[70px] md:max-w-[90px] h-auto">
         </div>
         
         <h1 class="bebas-neue text-5xl md:text-6xl font-bold text-gray-800 mb-4">Test Vocacional</h1>
@@ -53,7 +58,7 @@
         </button>
 
         <!-- Color Bar at the bottom -->
-        <img src="C:\Python\Scripts\TP\barra.jpeg" alt="Color bar" class="absolute bottom-0 left-0 w-full h-8 object-cover rounded-b-xl">
+        <img src="barra.jpeg" alt="Color bar" class="absolute bottom-0 left-0 w-full h-8 object-cover rounded-b-xl">
     </div>
 
     <!-- Main Quiz Section -->
@@ -63,7 +68,7 @@
     <!-- Result Section -->
     <div id="result-section" class="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl text-center relative overflow-hidden">
         <div class="flex justify-center mb-6">
-            <img src="C:\Python\Scripts\TP\tp.jpeg" alt="Técnicos Profesionales Logo" class="max-w-[120px] h-auto mb-4">
+            <img src="tp.jpeg" alt="Técnicos Profesionales Logo" class="max-w-[120px] h-auto mb-4">
         </div>
         
         <h2 class="bebas-neue text-4xl md:text-5xl font-bold text-gray-800 mb-4">Tu Área de Interés Principal</h2>
@@ -78,7 +83,7 @@
         </button>
 
         <!-- Color Bar at the bottom -->
-        <img src="C:\Python\Scripts\TP\barra.jpeg" alt="Color bar" class="absolute bottom-0 left-0 w-full h-8 object-cover rounded-b-xl">
+        <img src="barra.jpeg" alt="Color bar" class="absolute bottom-0 left-0 w-full h-8 object-cover rounded-b-xl">
     </div>
 
     <script>
@@ -217,12 +222,11 @@
                 quizSection.innerHTML = '';
                 shuffledQuestions.forEach((q, index) => {
                     const card = document.createElement('div');
-                    card.classList.add('question-card', 'bg-white', 'p-6', 'rounded-xl', 'shadow-lg');
-                    card.dataset.index = index;
+                    card.classList.add('question-card', 'bg-white', 'p-6', 'rounded-xl', 'shadow-lg', 'relative', 'overflow-hidden');
 
                     const title = document.createElement('h2');
                     title.classList.add('text-xl', 'font-bold', 'mb-4');
-                    title.textContent = `${index + 1}. ${q.text}`;
+                    title.textContent = q.text;
                     card.appendChild(title);
 
                     const optionsContainer = document.createElement('div');
@@ -259,6 +263,13 @@
                     }
                     
                     quizSection.appendChild(card);
+                    
+                    // Add the color bar to each question card
+                    const colorBar = document.createElement('img');
+                    colorBar.src = "barra.jpeg";
+                    colorBar.alt = "Color bar";
+                    colorBar.classList.add('absolute', 'bottom-0', 'left-0', 'w-full', 'h-8', 'object-cover', 'rounded-b-xl');
+                    card.appendChild(colorBar);
                 });
 
                 // Show the first question
